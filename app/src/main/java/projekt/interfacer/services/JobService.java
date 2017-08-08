@@ -80,6 +80,8 @@ public class JobService extends Service {
     private static final String COMMAND_VALUE_AUDIO = "audio";
     private static final String INTERFACER_PACKAGE = "projekt.interfacer";
     private static final String SUBSTRATUM_PACKAGE = "projekt.substratum";
+    private static final String OMNI_SUBSTRATUM_PACKAGE = "org.omnirom.substratum";
+
     private static final String[] AUTHORIZED_CALLERS = new String[]{
             INTERFACER_PACKAGE,
             SUBSTRATUM_PACKAGE,
@@ -862,6 +864,11 @@ public class JobService extends Service {
     @SuppressWarnings("ConstantConditions")
     private boolean isCallerAuthorized(int uid) {
         String callingPackage = getPackageManager().getPackagesForUid(uid)[0];
+        if (TextUtils.equals(callingPackage, OMNI_SUBSTRATUM_PACKAGE)) {
+            log("\'" + callingPackage
+                    + "\' is an authorized calling package...");
+            return true;
+        }
 
         for (String AUTHORIZED_CALLER : AUTHORIZED_CALLERS) {
             if (TextUtils.equals(callingPackage, AUTHORIZED_CALLER)) {
